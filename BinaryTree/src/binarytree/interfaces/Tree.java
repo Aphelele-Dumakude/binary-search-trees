@@ -42,6 +42,11 @@ public interface Tree<E> extends Iterable<E>{
     void postOrder();
 
     /**
+     * Prints the nodes in breadthFirst traversal
+     */
+    void breadthFirst();
+
+    /**
      *
      * @return the number of elements in the tree
      */

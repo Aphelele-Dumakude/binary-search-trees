@@ -89,7 +89,61 @@ public class BinarySearchTree<E extends Comparable<E>> extends AbstractTree<E> {
      */
     @Override
     public boolean delete(E element) {
-        return false;
+        if (root == null) {
+            return false;
+        }
+        TreeNode<E> currentNode = root;
+        TreeNode<E> parentNode = null;
+        while (currentNode != null) {
+            if (currentNode.element.compareTo(element) > 0) {
+                parentNode = currentNode;
+                currentNode = currentNode.left;
+            }
+            else if (currentNode.element.compareTo(element) < 0) {
+                parentNode = currentNode;
+                currentNode = currentNode.right;
+            }
+            else {
+                break;
+            }
+        }
+        // element is not in the BST
+        if (currentNode == null) {
+            return false;
+        }
+        // case 1: The current node does not have a left child
+        if (currentNode.left == null) {
+            if (parentNode == null) {
+                root = currentNode.right;
+            }
+            else {
+                if (parentNode.element.compareTo(element) > 0) {
+                    parentNode.left = currentNode.right;
+                }
+                else {
+                    parentNode.right = currentNode.right;
+                }
+            }
+        }
+        // case 2: The current node has a left child
+        else {
+            TreeNode<E> parentOfRightMost = currentNode;
+            TreeNode<E> rightMost = currentNode.left;
+
+            while (rightMost.right != null) {
+                parentOfRightMost = rightMost;
+                rightMost = rightMost.right;
+            }
+            currentNode.element = rightMost.element;
+            if (parentOfRightMost.right == rightMost) {
+                parentOfRightMost.right = rightMost.left;
+            }
+            else {
+                parentOfRightMost.left = rightMost.left;
+            }
+        }
+        size--;
+        return true;
     }
 
     /**
